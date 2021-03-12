@@ -21,7 +21,7 @@ require (
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/shirou/gopsutil v2.19.11+incompatible
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
-	github.com/snail007/go-activerecord v0.0.0-20190813031814-2ac2f3d7cff0
+	github.com/snail007/go-activerecord v0.0.0-20190813031814-90299f3cc8e215d7274a3569a03c0f93ef4f15e4
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/russross/blackfriday.v2 v2.0.0

@@ -17,13 +17,12 @@ var (
 
 func main() {
 	flag.Parse()
-
 	_, err := os.Stat(filepath.Join(storage.RootDir, "./install.lock"))
 	if err == nil || !os.IsNotExist(err) {
 		log.Println("MM-Wiki already installed!")
 		os.Exit(1)
 	}
 
-	//beego.BConfig.RunMode = "prod"
+	beego.BConfig.RunMode = "dev"
 	beego.Run(":" + *port)
 }
