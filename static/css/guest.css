@@ -1,0 +1,85 @@
+.page-guest {
+}
+
+.page-guest .page-guest-header {
+    align-content: space-between;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+}
+
+.page-guest .page-guest-header .navbar-form .input-group {
+    width: 400px;
+}
+
+.page-guest .page-guest-header .login-wrap {
+    color: white;
+    flex: 1;
+    line-height: 50px;
+    text-align: right;
+    padding-right: 50px;
+}
+
+.page-guest .page-guest-content {
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    left: 0;
+    padding-top: 50px;
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.page-guest .page-guest-content .guest-content-left {
+    border-right: 4px solid rgb(204, 204, 204);
+    overflow: auto;
+    width: 230px;
+}
+
+.page-guest .page-guest-content .guest-content-right {
+    flex: 1;
+    padding: 20px 100px 0;
+    overflow: auto;
+}
+
+.page-guest .page-guest-content .guest-content-articles {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+}
+
+.page-guest .page-guest-content .article-item {
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 16px;
+    width: 700px;
+}
+
+.page-guest .page-guest-content .article-title {
+    margin: 0;
+}
+
+.page-guest .page-guest-content .article-item:hover .article-title {
+    text-decoration: underline;
+}
+
+
+.page-guest .page-guest-content .article-desc {
+    margin-top: 10px;
+}
+
+.page-guest .page-guest-content .panel-footer {
+    width: 700px;
+}
+
+
+/**
+|---------------- 文章详情页css ----------------|
+ */
+.page-guest .page-guest-document{
+    box-sizing: border-box;
+    padding-top: 50px;
+}

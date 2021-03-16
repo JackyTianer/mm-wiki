@@ -23,6 +23,7 @@ const (
 
 	Space_VisitLevel_Public  = "public"
 	Space_VisitLevel_Private = "private"
+	Space_VisitLevel_Open = "open"
 )
 
 const Table_Space_Name = "space"

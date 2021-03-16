@@ -48,6 +48,8 @@
                         <label class="text text-danger">Private</label>
                     {{else if eq $space.visit_level "internal"}}
                         <label class="text text-warning">Internal</label>
+                    {{else if eq $space.visit_level "open"}}
+                        <label class="text text-primary">Open</label>
                     {{else}}
                         <label class="text text-primary">Public</label>
                     {{end}}

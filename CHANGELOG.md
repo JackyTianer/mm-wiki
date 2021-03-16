@@ -1,5 +1,8 @@
 # 更新日志：
 
+## v0.2.1-a
+### 修改表结构，将mw-space表visit_level增加常量open,用于完全开放
+
 ## v0.2.1（2020-09）
 
 ### Fix Bug & Add Feature

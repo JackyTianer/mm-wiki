@@ -25,6 +25,57 @@ type Document struct {
 
 var DocumentModel = Document{}
 
+// get open space document
+
+func (d *Document) GetOpenSpaceDocument(limit int, number int) (document []map[string]string, err error) {
+	db := G.DB()
+	joinTable := "mw_" + Table_Space_Name
+	onSQL := "mw_document.space_id=mw_space.space_id"
+	selectSQL := "mw_document.document_id, mw_document.name, mw_document.update_time, edit_user_id as user_id"
+	var rs *mysql.ResultSet
+
+	rs, err = db.Query(db.AR().
+		Select(selectSQL).
+		From(Table_Document_Name).
+		Join(joinTable, joinTable, onSQL, "INNER").
+		Where(map[string]interface{}{
+			"visit_level": "open",
+			"type":        1,
+		}).
+		Limit(limit, number).
+		OrderBy("mw_document.update_time", "DESC"))
+	if err != nil {
+		return
+	}
+	document = rs.Rows()
+	return document, err
+}
+
+/**
+get open space document count
+*/
+func (d *Document) CountOpenSpaceDocuments() (count int64, err error) {
+	db := G.DB()
+	joinTable := "mw_" + Table_Space_Name
+	onSQL := "mw_document.space_id=mw_space.space_id"
+	selectSQL := "count(*) as total"
+	var rs *mysql.ResultSet
+	rs, err = db.Query(
+		db.AR().
+			Select(selectSQL).
+			From(Table_Document_Name).
+			Join(joinTable, joinTable, onSQL, "INNER").
+			Where(map[string]interface{}{
+				"visit_level": "open",
+				"type":        1,
+			}))
+	if err != nil {
+		return
+	}
+	count = utils.NewConvert().StringToInt64(rs.Value("total"))
+	return
+}
+
 // get document by document_id
 func (d *Document) GetDocumentByDocumentId(documentId string) (document map[string]string, err error) {
 	db := G.DB()

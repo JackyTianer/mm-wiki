@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/static/css/guest.css">
+
+<div class="page-guest">
+    <div class="navbar navbar-inverse navbar-fixed-top page-guest-header">
+        <a class="navbar-brand" href="/" style="width: 239px;;">&nbsp;&nbsp;{{.system_name}}</a>
+        <div class="navbar-form navbar-left  visible-lg">
+            <div class="form-group has-feedback">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control input-sm" placeholder="请输入关键字搜索">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class=" login-wrap" href="/author/index">登录</a>
+    </div>
+    <div class="page-guest-content">
+        <div class="guest-content-left"></div>
+        <div class="guest-content-right">
+            <h3 class="guest-content-title">
+                文章列表
+            </h3>
+            <ul class="guest-content-articles">
+                {{range $doc := .documents}}
+                    <li class="article-item">
+                        <a href="/guest/document?document_id={{$doc.document_id}}" target="_blank">
+                            <h3 class="article-title">{{$doc.name}}</h3>
+                            <div class="article-desc">
+                                <span>{{$doc.username}}</span>
+                                <span>·</span>
+                                <span>{{dateFormat $doc.update_time "Y-m-d H:i"}}</span>
+                            </div>
+                        </a>
+                    </li>
+                {{end}}
+            </ul>
+            <div class="panel-footer">
+                {{template "paginator/default.html" .}}
+            </div>
+        </div>
+    </div>
+</div>

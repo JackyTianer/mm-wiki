@@ -19,5 +19,8 @@ install.lock
 .idea/
 
 node_modules/
+
+## exec file
 install/install_go
+mmwiki_go
 docker/

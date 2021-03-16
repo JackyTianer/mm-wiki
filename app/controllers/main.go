@@ -20,7 +20,6 @@ func (this *MainController) Index() {
 	for _, collectDoc := range collectDocs {
 		docIds = append(docIds, collectDoc["resource_id"])
 	}
-
 	documents, err := models.DocumentModel.GetDocumentsByDocumentIds(docIds)
 	if err != nil {
 		this.ErrorLog("查找收藏文档错误: " + err.Error())

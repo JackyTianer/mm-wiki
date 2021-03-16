@@ -18,7 +18,6 @@ func initRouter() {
 	// router
 	beego.BConfig.WebConfig.AutoRender = false
 	beego.BConfig.RouterCaseSensitive = false
-
 	beego.Router("/", &controllers.MainController{}, "*:Index")
 	beego.Router("/author", &controllers.AuthorController{}, "*:Index")
 	beego.AutoRouter(&controllers.AuthorController{})
@@ -31,6 +30,7 @@ func initRouter() {
 	beego.AutoRouter(&controllers.PageController{})
 	beego.AutoRouter(&controllers.ImageController{})
 	beego.AutoRouter(&controllers.AttachmentController{})
+	beego.AutoRouter(&controllers.GuestController{})
 
 	systemNamespace := beego.NewNamespace("/system",
 		beego.NSAutoRouter(&systemControllers.MainController{}),

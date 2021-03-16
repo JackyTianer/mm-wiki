@@ -89,7 +89,7 @@ CREATE TABLE `mw_space` (
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
   `description` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
   `tags` varchar(255) NOT NULL DEFAULT '' COMMENT '标签',
-  `visit_level` enum('private','public') NOT NULL DEFAULT 'public' COMMENT '访问级别：private,public',
+  `visit_level` enum('private','public', 'open') NOT NULL DEFAULT 'public' COMMENT '访问级别：private,public, open',
   `is_share` tinyint(3) NOT NULL DEFAULT '1' COMMENT '文档是否允许分享 0 否 1 是',
   `is_export` tinyint(3) NOT NULL DEFAULT '1' COMMENT '文档是否允许导出 0 否 1 是',
   `is_delete` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否删除 0 否 1 是',
