@@ -139,7 +139,7 @@ func (this *MainController) Search() {
 	var documents = []map[string]string{}
 	var err error
 	// 获取该用户有权限的空间
-	publicSpaces, err := models.SpaceModel.GetSpacesByVisitLevel(models.Space_VisitLevel_Public)
+	publicSpaces, err := models.SpaceModel.GetSpacesByVisitLevel([]string{models.Space_VisitLevel_Public, models.Space_VisitLevel_Open})
 	if err != nil {
 		this.ErrorLog("搜索文档列表获取用户空间权限出错：" + err.Error())
 		this.ViewError("搜索文档错误！")

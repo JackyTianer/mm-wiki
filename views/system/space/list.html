@@ -66,9 +66,7 @@
                 </td>
                 <td class="center">
                     <a name="edit" data-link="/system/space/edit?space_id={{$space.space_id}}"><i class="glyphicon glyphicon-edit"></i>修改</a>
-                    {{if ne $space.visit_level "open"}}
                     <a name="user" data-link="/system/space/member?space_id={{$space.space_id}}"><i class="fa fa-group"></i>成员</a>
-                    {{end}}
                     <a href="/system/space/download?space_id={{$space.space_id}}"><i class="fa fa-download"></i>下载</a>
                     <a onclick="Layers.confirm('确定要删除空间吗？', '/system/space/delete?space_id={{$space.space_id}}');"><i class="glyphicon glyphicon-trash"></i>删除</a>
                 </td>

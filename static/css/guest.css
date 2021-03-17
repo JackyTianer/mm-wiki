@@ -33,7 +33,6 @@
 }
 
 .page-guest .page-guest-content .guest-content-left {
-    border-right: 4px solid rgb(204, 204, 204);
     overflow: auto;
     width: 230px;
 }
@@ -71,7 +70,7 @@
     margin-top: 10px;
 }
 
-.page-guest .page-guest-content .panel-footer {
+.page-guest .page-guest-content .guest-content-footer {
     width: 700px;
 }
 
@@ -79,7 +78,27 @@
 /**
 |---------------- 文章详情页css ----------------|
  */
-.page-guest .page-guest-document{
+.page-guest .page-guest-document {
     box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    left: 0;
     padding-top: 50px;
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.page-guest .page-guest-document .guest-content-left {
+    /*border-right: 4px solid rgb(204, 204, 204);*/
+    overflow: auto;
+    width: 230px;
+    padding: 8px 10px;
+}
+
+.page-guest .page-guest-document .guest-content-right {
+    flex: 1;
+    padding: 20px 0;
+    overflow: auto;
 }

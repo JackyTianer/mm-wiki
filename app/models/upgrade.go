@@ -41,6 +41,9 @@ func (up *Upgrade) initHandleFunc() {
 	// v0.1.8 ~ v0.2.0
 	upgradeMap = append(upgradeMap, &upgradeHandle{Version: "v0.2.0", Func: up.v018ToV020})
 
+	// v0.2.1 ~ v0.2.2 开发空间只读权限功能
+	upgradeMap = append(upgradeMap, &upgradeHandle{Version: "v0.2.2", Func: up.v021ToV022})
+
 	// v0.2.1 ~ v0.2.7
 	//upgradeMap = append(upgradeMap, &upgradeHandle{Version: "v0.2.7", Func: up.v021ToV027})
 	// v0.2.7 ~ v0.3.3
@@ -199,6 +202,18 @@ func (up *Upgrade) v018ToV020() error {
 		"sequence":   97,
 	}
 	_, err = PrivilegeModel.InsertNotExists(privilege)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// upgrade v0.2.1 ~ v0.2.2
+func (up *Upgrade) v021ToV022() error {
+	db := G.DB()
+	// 1. 空间表 visit_level 字段增加 枚举 'open'
+	//ALTER TABLE mw_space MODIFY visit_level  enum('public','private','open') NOT NULL DEFAULT 'public' COMMENT '访问级别：private,public,open'
+	_, err := db.Exec(db.AR().Raw("ALTER TABLE mw_space MODIFY visit_level  enum('public','private','open') NOT NULL DEFAULT 'public' COMMENT '访问级别：private,public, open'"))
 	if err != nil {
 		return err
 	}

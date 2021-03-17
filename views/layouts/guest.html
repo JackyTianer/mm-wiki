@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+    <title>MM-Wiki</title>
+    <link type="favicon" rel="shortcut icon" href="/static/images/favicon.ico"/>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- font-awesome css-->
+    <link type="text/css" rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <!-- jquery popover css-->
+    <link type="text/css" rel="stylesheet" href="/static/plugins/popover/css/jquery.webui-popover.min.css">
+    <!-- editormd CSS-->
+    <link type="text/css" rel="stylesheet" href="/static/plugins/editor.md/css/editormd.preview.css"/>
+    <link type="text/css" rel="stylesheet" href="/static/plugins/editor.md/css/editormd.min.css"/>
+    <!-- bootstrap-switch.css -->
+    <link type="text/css" rel="stylesheet" href="/static/plugins/bootstrap-switch/css/bootstrap-switch.min.css">
+    <!-- dashboard css -->
+    <link type="text/css" rel="stylesheet" href="/static/css/dashboard.css">
+    <!-- zTreev3 CSS-->
+    <link type="text/css" rel="stylesheet" href="/static/plugins/zTreev3/css/metroStyle/metroStyle.css">
+    <!-- Custom styles for this template -->
+    <link href="/static/css/common.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/guest.css">
+
+    <!-- jquery js-->
+    <script type="text/javascript" src="/static/plugins/jquery/jquery1.11.js"></script>
+    <!-- jquery form js-->
+    <script type="text/javascript" src="/static/plugins/jquery/jquery.form.js"></script>
+    <!-- Bootstrap js-->
+    <script type="text/javascript" src="/static/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- jquery popover js-->
+    <script type="text/javascript" src="/static/plugins/popover/js/jquery.webui-popover.min.js"></script>
+    <!-- bootstrap-switch js-->
+    <script type="text/javascript" src="/static/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <!-- layer js-->
+    <script type="text/javascript" src="/static/plugins/layui/layer/layer.js"></script>
+    <!-- jquery base64-->
+    <script type="text/javascript" src="/static/plugins/jquery/base64.min.js"></script>
+
+    <!-- layout js-->
+    <script type="text/javascript" src="/static/plugins/layout/jquery-ui-1.11.0.js"></script>
+    <script type="text/javascript" src="/static/plugins/layout/jquery.layout.min.js"></script>
+
+    <!-- zTreev3 js-->
+    <script type="text/javascript" src="/static/plugins/zTreev3/js/jquery.ztree.all.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/zTreev3/js/jquery.ztree.exhide.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/zTreev3/js/fuzzysearch.min.js"></script>
+
+    <!-- editor.md js-->
+    <script type="text/javascript" src="/static/plugins/editor.md/editormd.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/editor.md/lib/marked.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/editor.md/lib/prettify.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/editor.md/lib/raphael.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/editor.md/lib/underscore.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/editor.md/lib/sequence-diagram.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/editor.md/lib/flowchart.min.js"></script>
+    <script type="text/javascript" src="/static/plugins/editor.md/lib/jquery.flowchart.min.js"></script>
+    <script type="text/javascript" src="/static/js/common/common.js"></script>
+    <script type="text/javascript" src="/static/js/common/date.js"></script>
+    <script type="text/javascript" src="/static/js/common/form.js"></script>
+    <script type="text/javascript" src="/static/js/common/layers.js"></script>
+    <script type="text/javascript" src="/static/js/common/storage.js"></script>
+
+    <script type="text/javascript" src="/static/js/modules/page.js"></script>
+
+</head>
+<body id="frame-body">
+<div class="page-guest">
+    <div class="navbar navbar-inverse navbar-fixed-top page-guest-header">
+        <a class="navbar-brand" href="/" style="width: 239px;;">&nbsp;&nbsp;{{.system_name}}</a>
+        <div class="navbar-form navbar-left  visible-lg">
+            <div class="form-group has-feedback">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control input-sm" id="keyword" placeholder="请输入关键字搜索">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary" id="search_btn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class=" login-wrap" href="/author/index">登录</a>
+    </div>
+    {{.LayoutContent}}
+</div>
+</body>
+<script>
+    $(function () {
+        $('#keyword').on('keydown', function (e) {
+            if (e.keyCode === 13) {
+                e.returnValue = false;
+                e.cancel = true;
+                $('#search_btn').click();
+            }
+        });
+        $('#search_btn').on('click', function () {
+            var url = '/guest/search';
+            url = url + '?keyword=' + $('#keyword').val();
+            layer.open({
+                type: 2,
+                skin: Layers.skin,
+                title: '<strong>搜索文档</strong>',
+                shadeClose: true,
+                shade: 0.6,
+                maxmin: true,
+                area: ['1000px', '525px'],
+                content: url,
+                padding: '10px'
+            });
+        });
+    });
+
+
+</script>
+</html>

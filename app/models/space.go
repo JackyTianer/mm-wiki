@@ -23,7 +23,7 @@ const (
 
 	Space_VisitLevel_Public  = "public"
 	Space_VisitLevel_Private = "private"
-	Space_VisitLevel_Open = "open"
+	Space_VisitLevel_Open    = "open"
 )
 
 const Table_Space_Name = "space"
@@ -266,7 +266,7 @@ func (s *Space) GetSpaces() (spaces []map[string]string, err error) {
 }
 
 // get spaces by visitLevel
-func (s *Space) GetSpacesByVisitLevel(visitLevel string) (spaces []map[string]string, err error) {
+func (s *Space) GetSpacesByVisitLevel(visitLevel []string) (spaces []map[string]string, err error) {
 
 	db := G.DB()
 	var rs *mysql.ResultSet

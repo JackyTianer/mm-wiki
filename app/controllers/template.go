@@ -37,7 +37,7 @@ func (this *TemplateController) Prepare() {
 	this.Data["version"] = app.Version
 	this.Data["copyright"] = app.CopyRight
 
-	if this.controllerName == "author" || this.controllerName == "guest"{
+	if this.controllerName == "author" || this.controllerName == "guest" {
 		return
 	}
 
@@ -45,7 +45,7 @@ func (this *TemplateController) Prepare() {
 		if this.IsAjax() {
 			this.JsonError("未登录或登录已失效！", nil, "/author/index")
 		} else {
-			this.Redirect("/author/index", 302)
+			this.Redirect("/guest/index", 302)
 		}
 		this.StopRun()
 	}
