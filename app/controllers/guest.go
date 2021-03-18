@@ -20,8 +20,9 @@ func (this *GuestController) Prepare() {
 func (this *GuestController) Index() {
 	page, _ := this.GetInt("page", 1)
 	number, _ := this.GetInt("number", 10)
+	filter := this.GetString("filter", "-1")
 
-	count, err := models.DocumentModel.CountOpenSpaceDocuments()
+	count, err := models.DocumentModel.CountOpenSpaceDocuments(filter)
 
 	if err != nil {
 		this.ErrorLog("搜索文档出错：" + err.Error())
@@ -39,7 +40,7 @@ func (this *GuestController) Index() {
 		limit = 0
 	}
 
-	documents, err := models.DocumentModel.GetOpenSpaceDocument(limit, number)
+	documents, err := models.DocumentModel.GetOpenSpaceDocument(limit, number, filter)
 	if err != nil {
 		this.ErrorLog("搜索文档出错：" + err.Error())
 		this.ViewError("搜索文档错误！")
@@ -68,8 +69,17 @@ func (this *GuestController) Index() {
 			}
 		}
 	}
+
+	// 获取根目录
+	rootDocuments, err := models.DocumentModel.GeOpenSpaceAllDir()
+	if err != nil {
+		this.ErrorLog("查找根目录失败：" + err.Error())
+		this.ViewError("查找根目录失败！")
+	}
 	this.SetPaginator(number, count)
 	this.Data["documents"] = documents
+	this.Data["rootDocuments"] = rootDocuments
+	this.Data["filter"] = filter
 	this.viewLayout("guest/index", "guest")
 }
 

@@ -37,6 +37,26 @@
     width: 230px;
 }
 
+.page-guest .page-guest-content .guest-content-dirs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.page-guest .page-guest-content .dir-item {
+    height: 32px;
+    line-height: 32px;
+    padding-left: 24px;
+}
+
+.page-guest .page-guest-content .dir-item.z-crt {
+    color: #1967d2;
+}
+
+.page-guest .page-guest-content .dir-item:hover {
+    color: #8ab4f8;
+}
+
 .page-guest .page-guest-content .guest-content-right {
     flex: 1;
     padding: 20px 100px 0;

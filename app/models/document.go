@@ -25,50 +25,84 @@ type Document struct {
 
 var DocumentModel = Document{}
 
-// get open space document
-
-func (d *Document) GetOpenSpaceDocument(limit int, number int) (document []map[string]string, err error) {
-	db := G.DB()
+func (d *Document) GeOpenSpaceAllDir() (dirs []map[string]string, err error) {
+	var rs *mysql.ResultSet
+	selectSQL := "mw_document.document_id, mw_document.name"
 	joinTable := "mw_" + Table_Space_Name
 	onSQL := "mw_document.space_id=mw_space.space_id"
-	selectSQL := "mw_document.document_id, mw_document.name, mw_document.update_time, edit_user_id as user_id"
-	var rs *mysql.ResultSet
-
+	db := G.DB()
 	rs, err = db.Query(db.AR().
 		Select(selectSQL).
 		From(Table_Document_Name).
 		Join(joinTable, joinTable, onSQL, "INNER").
 		Where(map[string]interface{}{
-			"visit_level": "open",
-			"type":        1,
-		}).
+			"visit_level":  "open",
+			"type":         2,
+			"Length(path)": 3,
+		}))
+	if err != nil {
+		return
+	}
+	dirs = rs.Rows()
+	return
+}
+
+// get open space document
+func (d *Document) GetOpenSpaceDocument(limit int, number int, filter string) (documents []map[string]string, err error) {
+	const regexpKey string = "path Regexp"
+	var rs *mysql.ResultSet
+	db := G.DB()
+	joinTable := "mw_" + Table_Space_Name
+	onSQL := "mw_document.space_id=mw_space.space_id"
+	selectSQL := "mw_document.document_id, mw_document.name, mw_document.path, mw_document.update_time, edit_user_id as user_id"
+	regexpFind := fmt.Sprintf("^[0-9]+,[0-9]+,%s$|^[0-9]+,[0-9]+,%s,", filter, filter)
+	whereMap := map[string]interface{}{
+		"visit_level": "open",
+		"type":        1,
+		regexpKey:     regexpFind,
+	}
+	if filter == "-1" {
+		delete(whereMap, regexpKey)
+	}
+	rs, err = db.Query(db.AR().
+		Select(selectSQL).
+		From(Table_Document_Name).
+		Join(joinTable, joinTable, onSQL, "INNER").
+		Where(whereMap).
 		Limit(limit, number).
 		OrderBy("mw_document.update_time", "DESC"))
 	if err != nil {
 		return
 	}
-	document = rs.Rows()
-	return document, err
+	documents = rs.Rows()
+	return
 }
 
 /**
 get open space document count
 */
-func (d *Document) CountOpenSpaceDocuments() (count int64, err error) {
+func (d *Document) CountOpenSpaceDocuments(filter string) (count int64, err error) {
+	const regexpKey string = "path Regexp"
 	db := G.DB()
 	joinTable := "mw_" + Table_Space_Name
 	onSQL := "mw_document.space_id=mw_space.space_id"
 	selectSQL := "count(*) as total"
+	regexpFind := fmt.Sprintf("^[0-9]+,[0-9]+,%s$|^[0-9]+,[0-9]+,%s,", filter, filter)
+	whereMap := map[string]interface{}{
+		"visit_level": "open",
+		"type":        1,
+		regexpKey:     regexpFind,
+	}
+	if filter == "-1" {
+		delete(whereMap, regexpKey)
+	}
 	var rs *mysql.ResultSet
 	rs, err = db.Query(
 		db.AR().
 			Select(selectSQL).
 			From(Table_Document_Name).
 			Join(joinTable, joinTable, onSQL, "INNER").
-			Where(map[string]interface{}{
-				"visit_level": "open",
-				"type":        1,
-			}))
+			Where(whereMap))
 	if err != nil {
 		return
 	}

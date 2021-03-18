@@ -1,5 +1,21 @@
 <div class="page-guest-content">
-    <div class="guest-content-left ui-layout-west"></div>
+    {{$filter := .filter}}
+    <div class="guest-content-left ui-layout-west">
+        <ul class="guest-content-dirs ">
+            <a href="/guest/index">
+                <li class="dir-item {{if eq $filter "-1"}} z-crt {{end}}">
+                    所有文章
+                </li>
+            </a>
+            {{range  $rDoc := .rootDocuments}}
+                <a href="/guest/index?filter={{$rDoc.document_id}}">
+                    <li class="dir-item {{if eq $filter $rDoc.document_id}} z-crt {{end}}">
+                        {{$rDoc.name}}
+                    </li>
+                </a>
+            {{end}}
+        </ul>
+    </div>
     <div class="guest-content-right ui-layout-center">
         <h3 class="guest-content-title">
             文章列表
@@ -17,7 +33,7 @@
                     </a>
                 </li>
             {{else}}
-                暂无可公开的文章
+                暂无可公开的文章,请<a href="/author/index">登录</a>后查看
             {{end}}
         </ul>
         <div class="guest-content-footer">
