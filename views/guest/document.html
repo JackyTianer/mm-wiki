@@ -105,13 +105,14 @@
         });
 
         // 按钮目录按钮永久显示, 滑动页面时, 固定显示
-        window.onscroll = function () {
-            var scrollHeight = document.documentElement.scrollTop || document.body.scrollTop;
+        $('.guest-content-right').scroll(function (e) {
+            var scrollHeight = $(this).scrollTop();
+            console.log(scrollHeight);
             var dirPreviewBox = $('.dir-preview-box');
             if (scrollHeight > 120) {
                 dirPreviewBox.css({
                     position: 'fixed',
-                    top: '20px'
+                    top: '70px'
                 });
             } else {
                 dirPreviewBox.css({
@@ -119,7 +120,7 @@
                     top: '0'
                 });
             }
-        };
+        })
 
         // 目录显示与隐藏
         $('.dir-preview-btn').click(function () {

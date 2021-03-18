@@ -14,6 +14,9 @@ type GuestController struct {
 func (this *GuestController) Prepare() {
 	systemName := models.ConfigModel.GetConfigValueByKey(models.ConfigKeySystemName, "Markdown Mini Wiki")
 	this.Data["system_name"] = systemName
+	if this.isLogin() {
+		this.Redirect("/", 302)
+	}
 	this.BaseController.Prepare()
 }
 
