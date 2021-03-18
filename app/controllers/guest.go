@@ -40,7 +40,7 @@ func (this *GuestController) Index() {
 		limit = 0
 	}
 
-	documents, err := models.DocumentModel.GetOpenSpaceDocument(limit, number, filter)
+	documents, err := models.DocumentModel.GetOpenSpaceDocuments(limit, number, filter)
 	if err != nil {
 		this.ErrorLog("搜索文档出错：" + err.Error())
 		this.ViewError("搜索文档错误！")

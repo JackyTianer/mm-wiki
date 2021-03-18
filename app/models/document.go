@@ -34,8 +34,9 @@ func (d *Document) GetSpaceDirByUserId(userId string) (dirs []map[string]string,
 		From(Table_Document_Name).
 		Join(joinTable, joinTable, onSQL, "INNER").
 		Where(map[string]interface{}{
-			"type":    2,
-			"user_id": userId,
+			"type":                  2,
+			"mw_document.is_delete": Document_Delete_False,
+			"user_id":               userId,
 		}))
 	if err != nil {
 		return
@@ -56,9 +57,10 @@ func (d *Document) GetOpenSpaceAllRootDir() (dirs []map[string]string, err error
 		From(Table_Document_Name).
 		Join(joinTable, joinTable, onSQL, "INNER").
 		Where(map[string]interface{}{
-			"visit_level":  "open",
-			"type":         2,
-			"Length(path)": 3,
+			"visit_level":           "open",
+			"type":                  2,
+			"mw_document.is_delete": Document_Delete_False,
+			"Length(path)":          3,
 		}))
 	if err != nil {
 		return
@@ -67,8 +69,8 @@ func (d *Document) GetOpenSpaceAllRootDir() (dirs []map[string]string, err error
 	return
 }
 
-// get open space document
-func (d *Document) GetOpenSpaceDocument(limit int, number int, filter string) (documents []map[string]string, err error) {
+// get open space documents
+func (d *Document) GetOpenSpaceDocuments(limit int, number int, filter string) (documents []map[string]string, err error) {
 	const regexpKey string = "path Regexp"
 	var rs *mysql.ResultSet
 	db := G.DB()
@@ -77,9 +79,10 @@ func (d *Document) GetOpenSpaceDocument(limit int, number int, filter string) (d
 	selectSQL := "mw_document.document_id, mw_document.name, mw_document.path, mw_document.update_time, edit_user_id as user_id"
 	regexpFind := fmt.Sprintf("^[0-9]+,[0-9]+,%s$|^[0-9]+,[0-9]+,%s,", filter, filter)
 	whereMap := map[string]interface{}{
-		"visit_level": "open",
-		"type":        1,
-		regexpKey:     regexpFind,
+		"visit_level":           "open",
+		"type":                  1,
+		regexpKey:               regexpFind,
+		"mw_document.is_delete": Document_Delete_False,
 	}
 	if filter == "-1" {
 		delete(whereMap, regexpKey)
@@ -109,9 +112,10 @@ func (d *Document) CountOpenSpaceDocuments(filter string) (count int64, err erro
 	selectSQL := "count(*) as total"
 	regexpFind := fmt.Sprintf("^[0-9]+,[0-9]+,%s$|^[0-9]+,[0-9]+,%s,", filter, filter)
 	whereMap := map[string]interface{}{
-		"visit_level": "open",
-		"type":        1,
-		regexpKey:     regexpFind,
+		"visit_level":           "open",
+		"type":                  1,
+		"mw_document.is_delete": Document_Delete_False,
+		regexpKey:               regexpFind,
 	}
 	if filter == "-1" {
 		delete(whereMap, regexpKey)
