@@ -25,7 +25,27 @@ type Document struct {
 
 var DocumentModel = Document{}
 
-func (d *Document) GeOpenSpaceAllDir() (dirs []map[string]string, err error) {
+func (d *Document) GetSpaceDirByUserId(userId string) (dirs []map[string]string, err error) {
+	var rs *mysql.ResultSet
+	joinTable := "mw_" + Table_SpaceUser_Name
+	onSQL := "mw_document.space_id=mw_space_user.space_id"
+	db := G.DB()
+	rs, err = db.Query(db.AR().
+		From(Table_Document_Name).
+		Join(joinTable, joinTable, onSQL, "INNER").
+		Where(map[string]interface{}{
+			"type":    2,
+			"user_id": userId,
+		}))
+	if err != nil {
+		return
+	}
+	dirs = rs.Rows()
+	return
+}
+
+// 获取所有开放空间的根目录
+func (d *Document) GetOpenSpaceAllRootDir() (dirs []map[string]string, err error) {
 	var rs *mysql.ResultSet
 	selectSQL := "mw_document.document_id, mw_document.name"
 	joinTable := "mw_" + Table_Space_Name

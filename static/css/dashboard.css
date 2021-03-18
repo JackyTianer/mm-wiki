@@ -92,6 +92,13 @@ body {
 /**
  * main-left collection
  */
+#main-left .left-collection{
+    height: 100%;
+}
+#main-left .left-collection-content{
+    height: 40%;
+    overflow: auto;
+}
 .collection-doc > span {
     margin-top: 10px;
     font-size: 20px;
@@ -118,6 +125,17 @@ body {
 
 .collection-doc > ul > li > a:hover, a:focus {
     /*text-decoration: underline;*/
+}
+
+#main-left .left-space-content{
+    height: 60%;
+    overflow: auto;
+}
+
+#main-left .left-space-content > hr{
+    border: 1px solid rgba(82, 82, 82, 1);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 /**

@@ -25,8 +25,15 @@ func (this *MainController) Index() {
 		this.ErrorLog("查找收藏文档错误: " + err.Error())
 		this.ViewError("查找收藏文档错误！")
 	}
+	//
+	spaceDirectories, err := models.DocumentModel.GetSpaceDirByUserId(this.UserId)
+	if err != nil {
+		this.ErrorLog("查找已加入的空间目录错误: " + err.Error())
+		this.ViewError("查找已加入的空间目录错误！")
+	}
 
 	this.Data["documents"] = documents
+	this.Data["spaceDirectories"] = spaceDirectories
 	this.Data["count"] = len(documents)
 	this.viewLayout("main/index", "main")
 }

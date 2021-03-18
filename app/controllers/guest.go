@@ -71,7 +71,7 @@ func (this *GuestController) Index() {
 	}
 
 	// 获取根目录
-	rootDocuments, err := models.DocumentModel.GeOpenSpaceAllDir()
+	rootDocuments, err := models.DocumentModel.GetOpenSpaceAllRootDir()
 	if err != nil {
 		this.ErrorLog("查找根目录失败：" + err.Error())
 		this.ViewError("查找根目录失败！")
