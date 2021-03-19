@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/astaxie/beego/logs"
@@ -108,7 +109,18 @@ func (this *PageController) View() {
 	this.Data["collection_id"] = collectionId
 	this.Data["page_content"] = documentContent
 	this.Data["parent_documents"] = parentDocuments
-	this.viewLayout("page/view", "document_page")
+	if document["type"] == strconv.Itoa(models.Document_Type_Dir) {
+		childDocuments, err := models.DocumentModel.GetDocumentsByParentId(documentId)
+		if err != nil {
+			this.ErrorLog("获取 " + documentId + "的子文档 失败：" + err.Error())
+			this.ViewError("获取子文档失败！")
+		}
+		this.Data["child_documents"] = childDocuments
+		this.viewLayout("page/directory_view", "document_page")
+	} else {
+		this.viewLayout("page/view", "document_page")
+	}
+
 }
 
 // page edit

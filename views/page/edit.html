@@ -1,6 +1,6 @@
 <div class="container-fluid" style="height: 100%">
     <form id="page_form" action="/page/modify" method="post" style="height: 98%" onsubmit="return false">
-    <div class="row">{{$pageContent := .page_content}}{{$document := .document}}
+    <div class="row">{{$pageContent := .page_content}}{{$document := .document}}{{$isDir := (eq $document.type  "2")}}
         <div class="col-md-12">
             <input type="hidden" name="document_id" value="{{$document.document_id}}">
             <div class="row">
@@ -34,9 +34,11 @@
             js  : "/static/plugins/editor.md/lib/katex/katex.min",
             css : "/static/plugins/editor.md/lib/katex/katex.min"
         };
+        {{if not $isDir}}
         var editor = editormd("document_page_editor", {
             width: "100%",
             // height: height,
+            readOnly:{{$isDir}},
             path : '/static/plugins/editor.md/lib/',
             toolbarIcons : function() {
                 // Using "||" set icons align right.
@@ -118,6 +120,7 @@
                 Storage.set(storageId, editor.getMarkdown());
             }
         });
+        {{end}}
     });
 
 </script>
