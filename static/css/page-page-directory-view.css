@@ -1,0 +1,40 @@
+
+.page-page-directory-view .md-view-box {
+
+}
+
+.page-page-directory-view .md-view-box .directory-view-documents {
+    display: flex;
+    flex-flow: row wrap;
+    list-style: none;
+}
+.page-page-directory-view .md-view-box .directory-view-documents a{
+    color: #333;
+}
+
+.page-page-directory-view .md-view-box .directory-view-documents .directory-view-document-item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-flow: column nowrap;
+    text-align: center;
+    justify-content: center;
+    height: 100px;
+    margin-right: 30px;
+    overflow: hidden;;
+    width: 100px;
+}
+
+.page-page-directory-view .md-view-box .directory-view-documents .directory-view-document-item .document-item-name {
+    margin-top: 10px;
+
+}
+
+.page-page-directory-view .md-view-box .directory-view-documents .directory-view-document-item:hover {
+    border-radius: 6px;
+    border: 1px solid #8ab4f8;;
+}
+
+.page-page-directory-view .md-view-box .directory-view-documents .directory-view-document-item i {
+    font-size: 30px;
+}
