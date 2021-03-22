@@ -27,7 +27,10 @@
 
 .page-page-directory-view .md-view-box .directory-view-documents .directory-view-document-item .document-item-name {
     margin-top: 10px;
-
+    text-overflow:ellipsis;
+    overflow:hidden;
+    width: 100%;
+    white-space:nowrap;
 }
 
 .page-page-directory-view .md-view-box .directory-view-documents .directory-view-document-item:hover {

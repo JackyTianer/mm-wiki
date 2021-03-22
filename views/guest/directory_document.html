@@ -41,7 +41,7 @@
                 <ul class="directory-view-documents">
                     {{range $childDocument := $childDocuments}}
                         <a href="/guest/view?document_id={{$childDocument.document_id}}" target="_parent">
-                            <li class="directory-view-document-item">
+                            <li class="directory-view-document-item"  title="{{$childDocument.name}}">
                                 {{if eq $childDocument.type "2"}}
                                     <i class="fa fa-folder" aria-hidden="true"></i>
                                 {{else}}
