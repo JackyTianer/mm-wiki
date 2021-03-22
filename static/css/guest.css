@@ -59,7 +59,7 @@
 
 .page-guest .page-guest-content .guest-content-right {
     flex: 1;
-    padding: 20px 100px 0;
+    /*padding: 20px 100px 0;*/
     overflow: auto;
 }
 

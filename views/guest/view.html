@@ -1,0 +1,62 @@
+<div class="page-guest-document container-fluid">
+    <div class="guest-content-left ui-layout-west">
+        {{$documents := .documents}}
+        {{$spaceDocument := .space_document}}{{$defaultDocumentId := .default_document_id}}
+        <div class="page-search">
+            <form onsubmit="return false">
+                <div class="form-group has-feedback">
+                    <i class="glyphicon glyphicon-search form-control-feedback" style="line-height: 32px;"></i>
+                    <input class="form-control input-sm" id="document_search" type="text" value=""
+                           placeholder="搜索空间文档..." style="padding-right: 28px;">
+                </div>
+            </form>
+        </div>
+        <div class="page-tree">
+            <h4 class="text-center">
+                <a href="/guest/document?document_id={{$spaceDocument.document_id}}">{{$spaceDocument.name}}</a>
+            </h4>
+            <hr>
+            <ul id="dir_tree" class="ztree"></ul>
+        </div>
+    </div>
+    <iframe src="/guest/document?document_id={{$defaultDocumentId}}" frameborder="0"
+            class="guest-content-right  ui-layout-center"></iframe>
+</div>
+
+
+<script src="/static/plugins/md-toc/md-toc.js"></script>
+<script type="text/javascript" src="/static/js/modules/document.js"></script>
+<script type="text/javascript">
+    var documentsData = [];
+    {{range $document := $documents}}
+    documentsData.push({
+        'spaceId': parseInt({{$document.space_id}}),
+        'id': parseInt({{$document.document_id}}),
+        'pId': parseInt({{$document.parent_id}}),
+        'name': {{$document.name}},
+        'open': false,
+        'isParent': {{if eq $document.type "2"}} true {{else}} false {{end}}
+    });
+    {{end}}
+    Document.ListTree('#dir_tree', documentsData, {{$defaultDocumentId}}, false, false, true);
+</script>
+
+<script>
+    $(function () {
+        $(document).ready(function () {
+            var sliderLayout = $('.page-guest-document').layout({
+                west__size: 230,
+                west__spacing_open: 4,
+                west__spacing_closed: 4,
+                west__togglerTip_closed: '打开侧栏',
+                west__togglerTip_open: '关闭侧栏',
+                west__resizerTip: '重置大小',
+                west__resizerCursor: 'col-resize',
+                west__sliderTip: '打开侧栏',
+                west__slideTrigger_open: 'click',
+                west__slideTrigger_close: 'click',
+                center__maskContents: true
+            });
+        });
+    });
+</script>

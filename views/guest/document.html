@@ -1,58 +1,49 @@
-
 <div class="page-guest-document container-fluid">
-    <div class="guest-content-left ui-layout-west">
-        {{$documents := .documents}}
-        {{$spaceDocument := .space_document}}{{$defaultDocumentId := .default_document_id}}{{$space := .space}}
-        <div class="page-search">
-            <form onsubmit="return false">
-                <div class="form-group has-feedback">
-                    <i class="glyphicon glyphicon-search form-control-feedback" style="line-height: 32px;"></i>
-                    <input class="form-control input-sm" id="document_search" type="text" value=""
-                           placeholder="搜索空间文档..." style="padding-right: 28px;">
-                </div>
-            </form>
-        </div>
-        <div class="page-tree">
-            <h4 class="text-center">
-                <a href="/guest/document?document_id={{$spaceDocument.document_id}}">{{$spaceDocument.name}}</a>
-            </h4>
-            <hr>
-            <ul id="dir_tree" class="ztree"></ul>
-        </div>
-    </div>
-    <div class="guest-content-right  ui-layout-center">
-        <div class="row">{{$pageContent := .page_content}}{{$document := .document}}
-            <div class="col-md-12">{{$createUser := .create_user}}{{$editUser := .edit_user}}
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <h3 class="view-page-title">{{$document.name}}</h3>
-                            <p class="view-page-time">
-                                <i class="fa fa-calendar fa-fw"></i>
-                                被
-                                <a class="text text-info" href="#"> {{$createUser.username}}（{{$createUser.given_name}}
-                                    ） </a>
-                                创建于 {{dateFormat $document.create_time "Y/m/d H:i:s"}} ， 被
-                                <a class="text text-info" href="#">{{$editUser.username}}（{{$editUser.given_name}}）<span
-                                            class="text text-primary"></span> </a>
-                                最后更新于 {{dateFormat $document.update_time "Y/m/d H:i:s"}}
-                            </p>
-                        </div>
+    {{$pageContent := .page_content}}{{$document := .document}}{{$parentDocuments := .parent_documents}}
+    <div class="row">
+        <div class="col-md-12">
+            {{$createUser := .create_user}}{{$editUser := .edit_user}}
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="view-page-title">{{$document.name}}</h3>
+                        <p class="view-page-path">
+                            <i class="fa fa-folder fa-fw"></i>
+                            {{range $parentDocument := $parentDocuments}}
+                                {{if eq $parentDocument.parent_id "0"}}
+                                    <strong><a class="text text-info" target="_parent"
+                                               href="/guest/view?document_id={{$parentDocument.document_id}}">{{$parentDocument.name}}</a></strong>
+                                {{else}}
+                                    <strong> / <a target="_parent"
+                                                  href="/guest/view?document_id={{$parentDocument.document_id}}">{{$parentDocument.name}}</a></strong>
+                                {{end}}
+                            {{end}}
+                        </p>
+                        <p class="view-page-time">
+                            <i class="fa fa-calendar fa-fw"></i>
+                            被
+                            <a class="text text-info" href="#"> {{$createUser.username}}（{{$createUser.given_name}}
+                                ） </a>
+                            创建于 {{dateFormat $document.create_time "Y/m/d H:i:s"}} ， 被
+                            <a class="text text-info" href="#">{{$editUser.username}}（{{$editUser.given_name}}）<span
+                                        class="text text-primary"></span> </a>
+                            最后更新于 {{dateFormat $document.update_time "Y/m/d H:i:s"}}
+                        </p>
                     </div>
-                    <hr style="margin: 0">
                 </div>
-                <div class="panel-body md-view-box">
-                    <div class="dir-preview-box">
-                        <div class="dir-preview-btn">
-                            展开目录
-                        </div>
-                        <div class="page-view-dir-toc" id="page-view-dir-toc">
+                <hr style="margin: 0">
+            </div>
+            <div class="panel-body md-view-box">
+                <div class="dir-preview-box">
+                    <div class="dir-preview-btn">
+                        展开目录
+                    </div>
+                    <div class="page-view-dir-toc" id="page-view-dir-toc">
 
-                        </div>
                     </div>
-                    <div id="document_page_view" style="padding: 0 10px 10px 10px;">
-                        <textarea style="display:none;">{{$pageContent}}</textarea>
-                    </div>
+                </div>
+                <div id="document_page_view" style="padding: 0 10px 10px 10px;">
+                    <textarea style="display:none;">{{$pageContent}}</textarea>
                 </div>
             </div>
         </div>
@@ -63,11 +54,6 @@
 <script src="/static/plugins/md-toc/md-toc.js"></script>
 <script type="text/javascript" src="/static/js/modules/document.js"></script>
 <script type="text/javascript">
-    Layers.bindIframe('[name=\'history\']', '文档修改历史', '508px', '1000px');
-    $('[data-toggle=\'web-popover\']').webuiPopover({ animation: 'pop', autoHide: 3000 });
-    if (parent.layoutOpen) {
-        parent.layoutOpen();
-    }
     $(function () {
         editormd.katexURL = {
             js: '/static/plugins/editor.md/lib/katex/katex.min',
@@ -120,7 +106,7 @@
                     top: '0'
                 });
             }
-        })
+        });
 
         // 目录显示与隐藏
         $('.dir-preview-btn').click(function () {
@@ -137,40 +123,6 @@
                 this.innerText = '展开目录';
                 pageViewDirToc.hide();
             }
-        });
-    });
-</script>
-<script type="text/javascript">
-    var documentsData = [];
-    {{range $document := $documents}}
-    documentsData.push({
-        'spaceId': parseInt({{$document.space_id}}),
-        'id': parseInt({{$document.document_id}}),
-        'pId': parseInt({{$document.parent_id}}),
-        'name': {{$document.name}},
-        'open': false,
-        'isParent': {{if eq $document.type "2"}} true {{else}} false {{end}}
-    });
-    {{end}}
-    Document.ListTree('#dir_tree', documentsData, {{$defaultDocumentId}}, false, false, true);
-</script>
-
-<script>
-    $(function () {
-        $(document).ready(function () {
-            var sliderLayout = $('.page-guest-document').layout({
-                west__size: 230,
-                west__spacing_open: 4,
-                west__spacing_closed: 4,
-                west__togglerTip_closed: '打开侧栏',
-                west__togglerTip_open: '关闭侧栏',
-                west__resizerTip: '重置大小',
-                west__resizerCursor: 'col-resize',
-                west__sliderTip: '打开侧栏',
-                west__slideTrigger_open: 'click',
-                west__slideTrigger_close: 'click',
-                center__maskContents: true
-            });
         });
     });
 </script>

@@ -29,7 +29,7 @@ var Document = {
      * list nav
      */
     ListTree: function (element, treeData, defaultId, isEditor, isDelete, isGuest) {
-        var pageUrl = isGuest ? '/guest/document' : '/document/index';
+        var pageUrl = isGuest ? '/guest/view' : '/document/index';
         if (isGuest) {
             isEditor = false;
             isDelete = false;

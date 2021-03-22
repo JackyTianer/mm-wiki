@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="/static/css/page-page-directory-view.css">
+
+<div class="container-fluid page-page-directory-view">
+    <div class="row">
+        {{$document := .document}}{{$parentDocuments := .parent_documents}}{{$childDocuments := .child_documents}}
+        <div class="col-md-12">
+            {{$createUser := .create_user}}{{$editUser := .edit_user}}
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="view-page-title">{{$document.name}}</h3>
+                        <p class="view-page-path">
+                            <i class="fa fa-folder fa-fw"></i>
+                            {{range $parentDocument := $parentDocuments}}
+                                {{if eq $parentDocument.parent_id "0"}}
+                                    <strong><a class="text text-info" target="_parent"
+                                               href="/guest/view?document_id={{$parentDocument.document_id}}">{{$parentDocument.name}}</a></strong>
+                                {{else}}
+                                    <strong> / <a target="_parent"
+                                                  href="/guest/view?document_id={{$parentDocument.document_id}}">{{$parentDocument.name}}</a></strong>
+                                {{end}}
+                            {{end}}
+                        </p>
+                        <p class="view-page-time">
+                            <i class="fa fa-calendar fa-fw"></i>
+                            被
+                            <a class="text text-info" href="#"> {{$createUser.username}}（{{$createUser.given_name}}
+                                ） </a>
+                            创建于 {{dateFormat $document.create_time "Y/m/d H:i:s"}} ， 被
+                            <a class="text text-info" href="#">{{$editUser.username}}（{{$editUser.given_name}}）<span
+                                        class="text text-primary"></span> </a>
+                            最后更新于 {{dateFormat $document.update_time "Y/m/d H:i:s"}}
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-right">
+                    </div>
+                </div>
+                <hr style="margin: 0">
+            </div>
+            <div class="panel-body md-view-box">
+                <ul class="directory-view-documents">
+                    {{range $childDocument := $childDocuments}}
+                        <a href="/guest/view?document_id={{$childDocument.document_id}}" target="_parent">
+                            <li class="directory-view-document-item">
+                                {{if eq $childDocument.type "2"}}
+                                    <i class="fa fa-folder" aria-hidden="true"></i>
+                                {{else}}
+                                    <i class="fa fa-file" aria-hidden="true"></i>
+                                {{end}}
+                                <div class="document-item-name">
+                                    {{$childDocument.name}}
+                                </div>
+                            </li>
+                        </a>
+                    {{end}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

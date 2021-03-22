@@ -4,6 +4,7 @@ import (
 	"github.com/phachon/mm-wiki/app/models"
 	"github.com/phachon/mm-wiki/app/utils"
 	"math"
+	"strconv"
 	"strings"
 )
 
@@ -115,10 +116,13 @@ func (this *GuestController) Document() {
 	}
 
 	// get parent documents by document
-	_, pageFile, err := models.DocumentModel.GetParentDocumentsByDocument(document)
+	parentDocuments, pageFile, err := models.DocumentModel.GetParentDocumentsByDocument(document)
 	if err != nil {
 		this.ErrorLog("查找父文档失败：" + err.Error())
 		this.ViewError("查找父文档失败！")
+	}
+	if len(parentDocuments) == 0 {
+		this.ViewError("父文档不存在！")
 	}
 
 	// get document content
@@ -149,7 +153,55 @@ func (this *GuestController) Document() {
 		}
 	}
 
-	// get default space document
+	this.Data["create_user"] = createUser
+	this.Data["edit_user"] = editUser
+	this.Data["document"] = document
+	this.Data["page_content"] = documentContent
+	this.Data["default_document_id"] = documentId
+	this.Data["parent_documents"] = parentDocuments
+	this.Data["space"] = space
+	if document["type"] == strconv.Itoa(models.Document_Type_Dir) {
+		childDocuments, err := models.DocumentModel.GetDocumentsByParentId(documentId)
+		if err != nil {
+			this.ErrorLog("获取 " + documentId + "的子文档 失败：" + err.Error())
+			this.ViewError("获取子文档失败！")
+		}
+		this.Data["child_documents"] = childDocuments
+		this.viewLayout("guest/directory_document", "document_page")
+	} else {
+		this.viewLayout("guest/document", "document_page")
+	}
+
+}
+
+func (this *GuestController) View() {
+	documentId := this.GetString("document_id", "")
+	if documentId == "" {
+		this.ViewError("文档未找到！")
+	}
+	document, err := models.DocumentModel.GetDocumentByDocumentId(documentId)
+	if err != nil {
+		this.ErrorLog("查找文档 " + documentId + " 失败：" + err.Error())
+		this.ViewError("查找文档失败！")
+	}
+	if len(document) == 0 {
+		this.ViewError("文档不存在！")
+	}
+	spaceId := document["space_id"]
+	space, err := models.SpaceModel.GetSpaceBySpaceId(spaceId)
+	if err != nil {
+		this.ErrorLog("查找空间 " + documentId + " 失败：" + err.Error())
+		this.ViewError("查找空间失败！")
+	}
+	if len(space) == 0 {
+		this.ViewError("文档所在空间不存在！")
+	}
+	// check space visit_level
+	isVisit, _, _ := this.GetDocumentPrivilege(space)
+	if !isVisit {
+		this.ViewError("您没有权限访问该空间！")
+	}
+
 	spaceDocument, err := models.DocumentModel.GetSpaceDefaultDocument(spaceId)
 	if err != nil {
 		this.ErrorLog("查找文档 " + documentId + " 失败：" + err.Error())
@@ -166,15 +218,11 @@ func (this *GuestController) Document() {
 		this.ViewError("查找文档失败！")
 	}
 
-	this.Data["create_user"] = createUser
-	this.Data["edit_user"] = editUser
 	this.Data["document"] = document
-	this.Data["page_content"] = documentContent
 	this.Data["default_document_id"] = documentId
-	this.Data["space"] = space
 	this.Data["space_document"] = spaceDocument
 	this.Data["documents"] = documents
-	this.viewLayout("guest/document", "guest")
+	this.viewLayout("guest/view", "guest")
 }
 
 // 搜索，支持根据标题和内容搜索

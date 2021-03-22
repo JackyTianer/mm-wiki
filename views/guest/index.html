@@ -16,14 +16,14 @@
             {{end}}
         </ul>
     </div>
-    <div class="guest-content-right ui-layout-center">
+    <div class="guest-content-right ui-layout-center" style="padding: 20px 100px 0">
         <h3 class="guest-content-title">
             文章列表
         </h3>
         <ul class="guest-content-articles">
             {{range $doc := .documents}}
                 <li class="article-item">
-                    <a href="/guest/document?document_id={{$doc.document_id}}" target="_blank">
+                    <a href="/guest/view?document_id={{$doc.document_id}}" target="_blank">
                         <h3 class="article-title">{{$doc.name}}</h3>
                         <div class="article-desc">
                             <span>{{$doc.username}}</span>
